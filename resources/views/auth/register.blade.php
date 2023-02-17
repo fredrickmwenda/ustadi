@@ -21,7 +21,7 @@
                     </div>
                     <div class="card-body pt-0"> 
                         <div>
-                            <a href="index-2.html">
+                            <a href="#">
                                 <div class="avatar-md profile-user-wid mb-4">
                                     <span class="avatar-title rounded-circle bg-light">
                                         <img src="assets/images/logo.svg" alt="" class="rounded-circle" height="34">
@@ -30,11 +30,20 @@
                             </a>
                         </div>
                         <div class="p-2">
-                            <form class="needs-validation"  action="{{ route('register') }}" method="POST" novalidate>  
-    
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <form class="needs-validation"  action="{{ route('register') }}" method="POST" novalidate>
+                                @csrf 
                                 <div class="mb-3">
                                     <label for="useremail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="useremail" placeholder="Enter email" required>  
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>  
                                     <div class="invalid-feedback">
                                         Please Enter Email
                                     </div>      
@@ -42,7 +51,7 @@
         
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter username" required>
                                     <div class="invalid-feedback">
                                         Please Enter Username
                                     </div>  
@@ -50,7 +59,7 @@
         
                                 <div class="mb-3">
                                     <label for="userpassword" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="userpassword" placeholder="Enter password" required>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
                                     <div class="invalid-feedback">
                                         Please Enter Password
                                     </div>       
@@ -58,7 +67,7 @@
                                 <!--confirmpassword-->
                                 <div class="mb-3">
                                     <label for="userpassword" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" id="userpassword" placeholder="Enter password" required>
+                                    <input type="password" class="form-control" id="confirm-password"  name="password_confirmation" placeholder="Enter password" required>
                                     <div class="invalid-feedback">
                                         Please Confirm Password
                                     </div>
@@ -67,6 +76,7 @@
                                 <div class="mb-3">
                                     <label for="userpassword" class="form-label">Role</label>
                                     <select class="form-control" id="role" name="role">
+                                        <option>Select User Type</option>
                                         <option value="mentor">Mentor</option>
                                         <option value="matron">Matron</option>
                                         <option value="admin">User</option>
@@ -78,48 +88,16 @@
 
                                 <!--if mentor is selected, show the location field with 47 kenyan counties-->
                                 <div class="mb-3" id="location" style="display: none;">
-                                    <label for="userpassword" class="form-label">Location</label>
+                                    <label for="userpassword" class="form-label">County</label>
                                     <select class="form-control" id="location" name="location">
-                                        <option value="Baringo">Baringo</option>
-                                        <option value="Bomet">Bomet</option>
-                                        <option value="Bungoma">Bungoma</option>
-                                        <option value="Busia">Busia</option>
-                                        <option value="Elgeyo-Marakwet">Elgeyo-Marakwet</option>
-                                        <option value="Embu">Embu</option>
-                                        <option value="Garissa">Garissa</option>
-                                        <option value="Homa Bay">Homa Bay</option>
-                                        <option value="Isiolo">Isiolo</option>
-                                        <option value="Kajiado">Kajiado</option>
-                                        <option value="Kakamega">Kakamega</option>
-                                        <option value="Kericho">Kericho</option>
-                                        <option value="Kiambu">Kiambu</option>
-                                        <option value="Kilifi">Kilifi</option>
-                                        <option value="Kirinyaga">Kirinyaga</option>
-                                        <option value="Kisii">Kisii</option>
-                                        <option value="Kisumu">Kisumu</option>
-                                        <option value="Kitui">Kitui</option>
-                                        <option value="Kwale">Kwale</option>
-                                        <option value="Laikipia">Laikipia</option>
-                                        <option value="Lamu">Lamu</option>
-                                        <option value="Machakos">Machakos</option>
-                                        <option value="Makueni">Makueni</option>
-                                        <option value="Mandera">Mandera</option>
-                                        <option value="Marsabit">Marsabit</option>
-                                        <option value="Meru">Meru</option>
-                                        <option value="Migori">Migori</option>
-                                        <option value="Mombasa">Mombasa</option>
-                                        <option value="Muranga">Muranga</option>
-                                        <option value="Nairobi">Nairobi</option>
-                                        <option value="Nakuru">Nakuru</option>
-                                        <option value="Nandi">Nandi</option>
-                                        <option value="Narok">Narok</option>
-                                        <option value="Nyamira">Nyamira</option>
-                                        <option value="Nyandarua">Nyandarua</option>
-                                        <option value="Nyeri">Nyeri</option>
-                                        <option value="Samburu">Samburu</option>
-                                        <option value="Siaya">Siaya</option>
-                                        <option value="Taita-Taveta">Taita-Taveta</option>
-                                        <option value="Tana River">Tana River</option>
+                                        <option >Select County</option>
+                                        @php
+                                          $locations = \App\Models\Location::get();
+                                        @endphp
+                                        @foreach($locations as $location)
+                                        <option value="{{$location->id}}">{{$location->name}}</option>
+                                        @endforeach
+
                                     </select>
                                     <div class="invalid-feedback">
                                         Please Select Location
@@ -132,9 +110,9 @@
                                         $schools = DB::table('schools')->get();
                                     @endphp
                                     <label for="userpassword" class="form-label">School</label>
-                                    <select class="form-control" id="school" name="school">
+                                    <select class="form-control" id="school" name="school_id">
                                         @foreach ($schools as $school)
-                                            <option value="{{$school->id}}">{{$school->name}}</option>
+                                            <option value="{{$school->id}}">{{$school->school_name}}</option>
                                         @endforeach
                                     </select>
                                     <div class="invalid-feedback">
@@ -196,7 +174,9 @@
 <script>
     $(document).ready(function(){
         $('#role').change(function(){
+            console.log()
             var role = $(this).val();
+            console.log(role);
             if(role == 'mentor'){
                 $('#location').show();
                 $('#school').hide();

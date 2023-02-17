@@ -61,7 +61,7 @@ class SchoolClubsController extends Controller
             // you are not allowed to view this page
             return redirect()->back()->with('message', 'You are not allowed to view this page');
         }
-        $schoolClubs = $this->repository->all();
+        // $schoolClubs = $this->repository->all();
 
         if (request()->wantsJson()) {
 

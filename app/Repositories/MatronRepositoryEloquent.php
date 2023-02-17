@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\matronRepository;
+use App\Repositories\MatronRepository;
 use App\Models\Matron;
 use App\Validators\MatronValidator;
 

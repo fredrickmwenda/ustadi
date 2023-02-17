@@ -20,7 +20,7 @@ Route::get('/', function () {
         // dd('here');
         return redirect()->route('dashboard');
     }
-    return view('auth.login');
+    return view('landing');
 });
 
 Auth::routes();
@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('clubs/{id}/edit', [App\Http\Controllers\ClubsController::class, 'edit'])->name('clubs.edit');
     Route::post('clubs/{id}/update', [App\Http\Controllers\ClubsController::class, 'update'])->name('clubs.update');
     Route::get('clubs/{id}/destroy', [App\Http\Controllers\ClubsController::class, 'destroy'])->name('clubs.destroy');
+    Route::get('/search-requests', [App\Http\Controllers\ClubsController::class, 'search'])->name('clubs.search');
     //activate & deactivate club
     Route::post('clubs/{id}/activate', [App\Http\Controllers\ClubsController::class, 'activateClub'])->name('clubs.activate');
     Route::post('clubs/{id}/deactivate', [App\Http\Controllers\ClubsController::class, 'deactivateClub'])->name('clubs.deactivate');

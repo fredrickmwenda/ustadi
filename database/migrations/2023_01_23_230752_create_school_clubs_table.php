@@ -23,7 +23,7 @@ return new class extends Migration
 			$table->foreign('approved_by')->references('id')->on('matrons');
 			$table->boolean('approved')->default(false);
 			//amount of students in the club
-			$table->integer('students_count')->default(0);
+			$table->integer('students_count');
 			//use deleted_at to deactivate a club
 			$table->softDeletes();
             $table->timestamps();

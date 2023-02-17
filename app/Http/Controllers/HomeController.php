@@ -46,11 +46,11 @@ class HomeController extends Controller
             ->groupBy('mentor_id')
             ->orderBy('total', 'desc')
             ->take(6)
-            ->get();
+            ->get();      
         $top_mentors = $top_mentors->pluck('mentor_id');
         $top_mentors = Mentor::whereIn('id', $top_mentors)->get();
-            // $transactionData = $this->getTransactionsAndDisbursements();
-            // $transactionData = json_encode($transactionData);
+        //get Five requests of the current month from Request model if they aint 5 add other for the upcoming month
+
         $sessionData = $this->sessions();
         $sessionData = json_encode($sessionData);
         $sessionSet = json_decode($sessionData);
@@ -71,6 +71,22 @@ class HomeController extends Controller
         // dd($mentorData, $schoolClubActivitiesData, $sessionData, $currentSessionsData);
 
         $all_sessions = DB::table('sessions')->get();
+
+        $today = Carbon::now();
+        $current_month = $today->month;
+        $next_month = $current_month + 1;
+        if ($next_month > 12) {
+            $next_month = 1;
+        }
+        $current_month_schedules = Schedule::whereMonth('start', $current_month)->take(5)->get();
+        if ($current_month_schedules->count() < 5) {
+            $additional_schedules = Schedule::whereMonth('start', $next_month)
+                ->take(5 - $current_month_schedules->count())
+                ->get();
+
+            $current_month_schedules = $current_month_schedules->concat($additional_schedules);
+        }
+        // dd($current_month_schedules);
         // dd($all_sessions);
 
         if(auth()->user()->hasRole('mentor')){
@@ -88,18 +104,21 @@ class HomeController extends Controller
             //get the school_club_ativities of the matron in accordance to requests
             $user_id = auth()->user()->id;
             $matron = \App\Models\Matron::where('user_id', $user_id)->first();
+            // dd($matron);
             
             // check the accepted requests of the matron
             $request = \App\Models\Request::where('school_id', $matron->school_id)->where('accepted', 1)->get();
+            // dd($request);
             // get unique school_club_activities
-            $school_club_activities = $request->unique('school_club_activity_id');
+            $school_club_activities = $request->pluck('school_club_activity_id');
+            
             $school_club_activities = SchoolClubActivity::whereIn('id', $school_club_activities)->orderBy('created_at', 'desc')->get();
         }
         else{
             $school_club_activities = SchoolClubActivity::orderBy('created_at', 'desc')->get();
         }
         // dd($top_mentors);
-        return view('home', compact('schools', 'clubs', 'users', 'requests', 'resources', 'top_mentors', 'school_club_activities', 'sessionData', 'currentSessionsData', 'schoolClubActivitiesData', 'mentorData', 'all_sessions'));
+        return view('home', compact('schools', 'clubs', 'users', 'requests', 'resources', 'top_mentors', 'school_club_activities', 'sessionData', 'currentSessionsData', 'schoolClubActivitiesData', 'mentorData', 'all_sessions', 'current_month_schedules'));
     }
 
     //profile route
@@ -123,7 +142,7 @@ class HomeController extends Controller
 
             }
             else{
-                $schedules = Schedule::get(['id', 'event_name', 'event_start', 'event_end']);
+                $schedules = Schedule::get();
             }
             //return events
             return response()->json($schedules);
@@ -198,7 +217,7 @@ class HomeController extends Controller
             // check the accepted requests of the matron
             $request = \App\Models\Request::where('school_id', $matron->school_id)->where('accepted', 1)->get();
             // get unique school_club_activities
-            $school_club_activities = $request->unique('school_club_activity_id');
+            $school_club_activities = $request->pluck('school_club_activity_id');
             $school_club_activities = SchoolClubActivity::whereIn('id', $school_club_activities)->get();
             //order by month
             $school_club_activities_month  = $school_club_activities->groupBy(function($val) {
@@ -276,11 +295,12 @@ class HomeController extends Controller
                 //check if the month is in the sessionsByMonth array
                 if(array_key_exists($month, $request_month->toArray())){
                     //if it is, get the sessions of that month
-                    $request = $request_month[$month];
+                    // $request = $request_month[$month];
                     //loop through the sessions
-                    foreach($request as $request){
+                    foreach($request_month as $requesti => $value ){
                         //count the number of school_club_activities for that month
-                        $request_count = count($request);
+                        $monthly_request = $value;
+                        $request_count = count($monthly_request);
                         $request_data[$month] = $request_count;
                         // $school_club_activities_data[$month][] = $school_club_activity;
                     }

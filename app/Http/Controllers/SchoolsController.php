@@ -51,7 +51,7 @@ class SchoolsController extends Controller
      */
     public function index()
     {
-        $schools = School::with('location')->get();
+        $schools = School::with('location', 'creator')->get();
         // dd($schools);
 
 
@@ -79,7 +79,7 @@ class SchoolsController extends Controller
     {
         // dd($request->all());
 
-        $validatedData = $request->validate([
+         $request->validate([
             'school_name' => 'required|unique:schools|max:100',
             'county_id' => 'required',
             //email set to unique but not required sometimes so it can be null
@@ -88,19 +88,42 @@ class SchoolsController extends Controller
             // 'address' => 'required',
             'motto' => 'required',
         ]);
-
         // dd($request->all());
-        
-
-        //store school
-        School::create([
-            'school_name' => $request->school_name,
-            'county_id' => $request->county_id,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'motto' => $request->motto,
-            'created_by' => auth()->user()->id,
-        ]);
+        if ($request->hasFile('logo')) {
+            // dd($request->all());
+            $file = $request->file('logo')->getClientOriginalName();
+            $filename = pathinfo($file, PATHINFO_FILENAME);
+            // get just extension
+            $extension = $request->file('logo')->getClientOriginalExtension();
+            // filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            //move the file to the folder, assets/images/clubs
+            $path = $request->file('logo')->move(public_path('assets/images/school'), $fileNameToStore);
+            $name = $fileNameToStore;
+            // dd($name);
+            //from the request remove the file and add the name of the file to the request
+            $logo = $name;
+            // $request->merge(['logo' => $name]);
+            School::create([
+                'school_name' => $request->school_name,
+                'county_id' => $request->county_id,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'logo' => $logo,
+                'motto' => $request->motto,
+                'created_by' => auth()->user()->id,
+            ]);
+        }
+        else{
+            School::create([
+                'school_name' => $request->school_name,
+                'county_id' => $request->county_id,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'motto' => $request->motto,
+                'created_by' => auth()->user()->id,
+            ]);
+        }
 
         return redirect()->route('schools.index')->with('success', 'School created successfully');
 

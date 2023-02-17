@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\mentorRepository;
+use App\Repositories\MentorRepository;
 use App\Models\Mentor;
 use App\Validators\MentorValidator;
 

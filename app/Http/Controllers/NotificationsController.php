@@ -17,8 +17,13 @@ class NotificationsController extends Controller
    //
    public function index()
    {
-       // all notifications
-       $notifications = auth()->user()->notifications;
+       $user = auth()->user()->id;
+       $mentor = Mentor::where('user_id', $user)->first();
+       if(!$mentor){
+        return redirect()->back()->with('error', 'You are not authorized to view this page');
+       }
+       $notifications = Notifications::where('notifiable_id', $mentor->id)->where('notifiable_type', 'App\Models\Mentor')->get();
+    //    $notifications = auth()->user()->notifications;
        return view('notifications.index', compact('notifications'));
    }
 
@@ -44,7 +49,7 @@ class NotificationsController extends Controller
 
    //mark all notifications as read
    public function markAllAsRead(){
-      $user = auth()->user()->id ;
+      $user = auth()->user()->id;
       $mentor = Mentor::where('user_id', $user)->first();
         $notifications = Notifications::where('notifiable_id', $mentor->id)->where('notifiable_type', 'App\Models\Mentor')->where('read_at', NULL)->get();
             foreach ($notifications as $key => $value) {

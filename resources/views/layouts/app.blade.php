@@ -33,48 +33,7 @@
                 <!-- </div>
             </div> -->
         </div>
-        @if (isset($errors) && $errors->any())
-	    @foreach ($errors->all() as $error)
-	        <script>
-				$(document).ready(function(){
-					toastr.error('{{ $error }}', 'Error', {
-						closeButton: true,
-					});
-				});
-	        </script>
-		@endforeach
-	@endif
 
-	@if (session('success'))
-		<script>
-			$(document).ready(function(){
-				toastr.success('{{ session('success') }}', 'Success', {
-					closeButton: true,
-				});
-			});
-		</script>
-	@endif
-
-	@if (session('message'))
-		<script>
-			$(document).ready(function(){
-				toastr.success('{{ session('message') }}', 'Success', {
-					closeButton: true,
-				});
-			});
-		</script>
-	@endif
-
-	@if (session('error'))
-        <script>
-            $(document).ready(function() {
-                toastr.error('{{ session('error') }}', 'Error!', {
-                    closeButton: true,
-                    // progressBar: true,
-                });
-            });
-        </script>
-    @endif
         @include('layouts.partials.footer')
     </div>
 
@@ -87,6 +46,71 @@
 <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
 <script src="{{ asset('assets/libs/toastr/build/toastr.min.js') }}"></script>
+</script><script src="{{ asset('assets/js/app.js') }}"></script>
+<script>
+$(document).ready(function() {
+    $("#s-datatable").DataTable({
+        "pageLength": 25,
+        //ORDER BY ID DESC
+        responsive: true,
+    });
+});
+</script>
+@if (isset($errors) && $errors->any())
+            @foreach ($errors->all() as $error)
+                <script>
+                    $(document).ready(function(){
+                        toastr.error('{{ $error }}', 'Error', {
+                            closeButton: true,
+                        });
+                    });
+                </script>
+            @endforeach
+	    @endif
+
+        @if (session('success'))
+            <script>
+                $(document).ready(function(){
+                    toastr.success('{{ session('success') }}', 'Success', {
+                        closeButton: true,
+                    });
+                });
+            </script>
+        @endif
+
+	@if (session('message'))
+		<script>
+			$(document).ready(function(){
+				toastr.success('{{ session('message') }}', 'Success', {
+					closeButton: true,
+				});
+			});
+		</script>
+	@endif
+
+    @php
+        $message = $response['message'] ?? '';
+    @endphp
+
+    @if ($message)
+    <script>
+        $(document).ready(function(){
+            toastr.success("{{ $message }}");
+        });
+    </script>
+    @endif
+
+	@if (session('error'))
+        <script>
+            $(document).ready(function() {
+                toastr.error('{{ session('error') }}', 'Error!', {
+                    closeButton: true,
+                    // progressBar: true,
+                });
+            });
+        </script>
+    @endif
+
 
 <!-- apexcharts -->
 

@@ -37,7 +37,9 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
+									@can('permission.create')
                                     <a href="{{ route('permissions.create') }}" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Permission</a>
+									@endcan
                                 </div>
                             </div><!-- end col-->
                         </div>
@@ -50,7 +52,9 @@
 									</div> -->
 									<h4 class="card-title mt-4"> Permissions </h4>
 									<hr style="margin-top: 0rem!important;">
-									@php $i = 1; @endphp
+									@php 
+									$i = 1;
+									@endphp
 									@foreach ($permission_groups as $group)
 										<div class="row">
 											<div class="col-3">

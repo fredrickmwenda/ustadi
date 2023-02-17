@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@push('css')
+<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -26,22 +28,25 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <div class="search-box me-2 mb-2 d-inline-block">
+                                <h4 class="card-title">Total Mentors: {{$mentors->count()}}</h4>
+                                <!-- <div class="search-box me-2 mb-2 d-inline-block">
                                     <div class="position-relative">
                                         <input type="text" class="form-control" placeholder="Search...">
                                         <i class="bx bx-search-alt search-icon"></i>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
-                                <a href="{{route('mentors.create')}}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Mentor</a>
+                                    @can('mentor.create')
+                                    <a href="{{route('mentors.create')}}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Mentor</a>
+                                    @endcan
                                 </div>
                             </div><!-- end col-->
                         </div>
 
                         <div class="table-responsive">                             
-                          <table class="table align-middle table-nowrap table-check">
+                          <table class="table align-middle table-nowrap table-check"  id="s-datatable">
                               <thead class="table-light">
                                   <tr>
                                       <th style="width: 20px;" class="align-middle">
@@ -89,10 +94,8 @@
                                          {{$mentor->availability}}      
                                       </td>
                                         <td>
-                                            @if (!$mentor->specializations == null)
-                                            @foreach (json_decode($mentor->specializations) as $specialization)
-                                            <span class="badge bg-soft-success text-success mb-1">{{$specialization}}</span>
-                                            @endforeach
+                                            @if (!$mentor->specializations == null)                                        
+                                            <span class="badge bg-soft-success text-success mb-1">{{$mentor->specializations}}</span>
                                             @else
                                             <span class="badge bg-soft-success text-success mb-1">No Specializations</span>
                                             @endif
@@ -103,7 +106,9 @@
                                             @else
                                             @if (auth()->user()->role == "admin" || auth()->user()->role == "coordinator")
                                             <!--open a modal to approve the mentor-->
+                                            @can('mentor.activate')
                                             <button type="button" class="btn btn-sm btn-warning btn-rounded mb-1" type="button" data-bs-toggle="modal" data-bs-target=".approveMentorModal" data-bs-mentor-id="{{$mentor->id}}">Approve</button>
+                                            @endcan
                                             @else
                                             <span class="badge bg-soft-warning text-warning mb-1">{{$mentor->approval_status}}</span>
                                             @endif
@@ -115,11 +120,15 @@
                                               View Details
                                           </button>
                                       </td>
-                                      <td>
-                                          <div class="d-flex gap-3">
-                                              <a href="{{route('mentors.edit', $mentor->id)}}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
-                                              <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
-                                          </div>
+                                        <td>
+                                           <div class="d-flex gap-3">
+                                               @can('mentor.edit')
+                                                <a href="{{route('mentors.edit', $mentor->id)}}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                @endcan
+                                                @can('mentor.delete')
+                                                <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
+                                                @endcan
+                                           </div>
                                       </td>
                                   </tr>
                                     @endforeach
@@ -129,23 +138,6 @@
                               </tbody>
                           </table>
                         </div>
-                        <ul class="pagination pagination-rounded justify-content-end mb-2">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="javascript: void(0);" aria-label="Previous">
-                                    <i class="mdi mdi-chevron-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript: void(0);" aria-label="Next">
-                                    <i class="mdi mdi-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -163,9 +155,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                
-                <!--pass the mentor id to the route-->
-                <!-- <form id="approveMentorForm" method="POST">
-                    @csrf -->
                 <div class="modal-body">
                     <p>Are you sure you want to approve this mentor?</p>
                     <p class="mb-0">This action cannot be undone.</p>
@@ -191,93 +180,13 @@
 
 
 </div>
-<!-- <div class="modal fade orderdetailsModal" tabindex="-1" role="dialog" aria-labelledby=orderdetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id=orderdetailsModalLabel">Order Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p class="mb-2">Product id: <span class="text-primary">#SK2540</span></p>
-                <p class="mb-4">Billing Name: <span class="text-primary">Neal Matthews</span></p>
 
-                <div class="table-responsive">
-                    <table class="table align-middle table-nowrap">
-                        <thead>
-                            <tr>
-                            <th scope="col">Product</th>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <div>
-                                        <img src="assets/images/product/img-7.png" alt="" class="avatar-sm">
-                                    </div>
-                                </th>
-                                <td>
-                                    <div>
-                                        <h5 class="text-truncate font-size-14">Wireless Headphone (Black)</h5>
-                                        <p class="text-muted mb-0">$ 225 x 1</p>
-                                    </div>
-                                </td>
-                                <td>$ 255</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div>
-                                        <img src="assets/images/product/img-4.png" alt="" class="avatar-sm">
-                                    </div>
-                                </th>
-                                <td>
-                                    <div>
-                                        <h5 class="text-truncate font-size-14">Hoodie (Blue)</h5>
-                                        <p class="text-muted mb-0">$ 145 x 1</p>
-                                    </div>
-                                </td>
-                                <td>$ 145</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <h6 class="m-0 text-right">Sub Total:</h6>
-                                </td>
-                                <td>
-                                    $ 400
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <h6 class="m-0 text-right">Shipping:</h6>
-                                </td>
-                                <td>
-                                    Free
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <h6 class="m-0 text-right">Total:</h6>
-                                </td>
-                                <td>
-                                    $ 400
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-<!-- end modal -->
 @endsection
 
 @push('js')
+<script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+
 <script>
     $(document).ready(function(){
         $('.approveMentorModal').on('show.bs.modal', function (event) {

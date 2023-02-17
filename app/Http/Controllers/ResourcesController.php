@@ -9,8 +9,10 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\ResourceCreateRequest;
 use App\Http\Requests\ResourceUpdateRequest;
+use App\Models\Mentor;
 use App\Repositories\ResourceRepository;
 use App\Validators\ResourceValidator;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ResourcesController.
@@ -49,7 +51,14 @@ class ResourcesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $resources = $this->repository->all();
+        if (auth()->user()->role == 'mentor'){
+            $user = auth()->user()->id;
+            $mentor = Mentor::where('user_id', $user)->first();
+            $resources =$this->repository->findWhere(['from_id' =>$mentor->id]);
+        }
+        else{
+            $resources = $this->repository->all();
+        }
 
         if (request()->wantsJson()) {
 
@@ -80,7 +89,10 @@ class ResourcesController extends Controller
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-
+            $user = auth()->user()->id;
+            $mentor = Mentor::where('user_id', $user)->first();
+            $request->merge(['from_id' => $mentor->id ]);
+            // dd($request->all());
             $resource = $this->repository->create($request->all());
 
             $response = [
@@ -93,7 +105,7 @@ class ResourcesController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return redirect()->route('resources.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -169,7 +181,7 @@ class ResourcesController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return redirect()->route('resources.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {

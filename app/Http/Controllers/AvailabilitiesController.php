@@ -9,8 +9,10 @@ use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\AvailabilityCreateRequest;
 use App\Http\Requests\AvailabilityUpdateRequest;
+use App\Models\Mentor;
 use App\Repositories\AvailabilityRepository;
 use App\Validators\AvailabilityValidator;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class AvailabilitiesController.
@@ -52,7 +54,9 @@ class AvailabilitiesController extends Controller
         if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('coordinator')) {
             $availabilities = $this->repository->all();
         } elseif (auth()->user()->hasRole('mentor')) {
-            $availabilities = $this->repository->findWhere(['mentor_id' => auth()->user()->mentor->id]);
+            $mentor_id = Auth::user()->id;
+            $mentor =  Mentor::where('user_id', $mentor_id)->first();
+            $availabilities = $this->repository->findWhere(['mentor_id' => $mentor->id]);
         }
         // $availabilities = $this->repository->all();
 
@@ -73,7 +77,9 @@ class AvailabilitiesController extends Controller
         if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('coordinator')) {
             $mentors = \App\Models\Mentor::all();
         } elseif (auth()->user()->hasRole('mentor')) {
-            $mentors = \App\Models\Mentor::where('id', auth()->user()->mentor->id)->get();
+            $mentor_id = Auth::user()->id;
+            $mentor =  Mentor::where('user_id', $mentor_id)->first();
+            $mentors = \App\Models\Mentor::where('id', $mentor->id)->get();
         }
         return view('availabilities.create', compact('mentors'));
     }

@@ -195,8 +195,12 @@ class SchedulesController extends Controller
     public function edit($id)
     {
         $schedule = $this->repository->find($id);
+        $mentor_id = auth()->user()->id;
+        $mentor = Mentor::where('user_id', $mentor_id)->first();
 
-        return view('schedules.edit', compact('schedule'));
+        $requests = ModelsRequest::where('mentor_id', $mentor->id)->where('accepted', 1)->get();
+
+        return view('schedules.edit', compact('schedule', 'requests'));
     }
 
     /**
@@ -243,7 +247,7 @@ class SchedulesController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return redirect()->route('schedules.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {

@@ -144,7 +144,7 @@
 
 
 
-                            @can('availability.module')
+                            <!-- @can('availability.module')
                             <li>
                                 <a class="has-arrow waves-effect">
                                     <i class="bx bx-task"></i>
@@ -159,7 +159,7 @@
                                     @endcan
                                 </ul>
                             </li>
-                            @endcan
+                            @endcan -->
 
                             @can('resource.module')
                             <li>

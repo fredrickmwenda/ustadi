@@ -24,7 +24,8 @@
 					<div class="card-body">
 
 						<h4 class="card-title">Resource Information</h4>
-						<form>
+						<form class="needs-validation" method="POST" action="{{route('resources.store')}}" novalidate>
+							@csrf
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="mb-3">
@@ -91,7 +92,7 @@
 
 							<div class="d-flex flex-wrap gap-2">
 								<button type="submit" class="btn btn-primary waves-effect waves-light">Save Changes</button>
-								<button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
+								<!-- <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button> -->
 							</div>
 						</form>
 

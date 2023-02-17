@@ -1,6 +1,7 @@
 @extends('layouts.app')
-
-
+@push('css')
+<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -29,22 +30,25 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <div class="search-box me-2 mb-2 d-inline-block">
+                            <h4 class="card-title">Total SchoolClubActivities: {{$schoolClubActivities->count()}}</h4>
+                                <!-- <div class="search-box me-2 mb-2 d-inline-block">
                                     <div class="position-relative">
                                         <input type="text" class="form-control" placeholder="Search...">
                                         <i class="bx bx-search-alt search-icon"></i>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
-                                    <a href="{{route('clubs-activities.create')}}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New clubActivity</a>
+                                    @can('school_club_activity.create')
+                                    <a href="{{route('school-club-activities.create')}}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New School ClubActivity</a>
+                                    @endcan
                                 </div>
                             </div><!-- end col-->
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table align-middle table-nowrap table-check">
+                            <table class="table align-middle table-nowrap table-check" id="s-datatable">
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 20px;" class="align-middle">
@@ -64,28 +68,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        @foreach($schoolClubActivities as $key => $schoolclubActivity)
+                                    @foreach($schoolClubActivities as $key => $schoolclubActivity)
+                                    <tr>                                     
                                         <td>
                                             <div class="form-check font-size-16">
                                                 <input class="form-check-input" type="checkbox" id="clubActivityidcheck01">
                                                 <label class="form-check-label" for="clubActivityidcheck01"></label>
                                             </div>
                                         </td>
-                                        <!-- <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2540</a> </td> -->
                                         <td>{{$key +1}}</td>
                                         <td>
                                         {{$schoolclubActivity->school_club_activity}}
                                         </td>
                                         <td>
-                                            <!--set the description to 3 words only with ...-->
+                                            
                                             @php
                                             $description = $schoolclubActivity->description;
                                             $description = explode(" ", $description);
                                             $description = array_slice($description, 0, 3);
                                             $description = implode(" ", $description);
-                                            @endphp
-                                            
+                                            @endphp                                           
                                             {{$description . '...'}}
                                         </td>
                                         <td>
@@ -101,15 +103,19 @@
                                         </td>
 
                                         <td>
-                                            <!-- Button trigger modal -->
+                                            
                                             <button type="button" class="btn btn-primary btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target=".clubActivitydetailsModal" data-id="{{$schoolclubActivity->id}}">
                                                 View Details
                                             </button>
                                         </td>
                                         <td>
                                             <div class="d-flex gap-3">
+                                                @can('school_club_activity.edit')
                                                 <a href="{{ route('school-club-activities.edit',$schoolclubActivity->id) }}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                @endcan
+                                                @can('school_club_activity.delete')
                                                 <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>
@@ -120,23 +126,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <ul class="pagination pagination-rounded justify-content-end mb-2">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="javascript: void(0);" aria-label="Previous">
-                                    <i class="mdi mdi-chevron-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript: void(0);" aria-label="Next">
-                                    <i class="mdi mdi-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
+
                     </div>
                 </div>
             </div>
@@ -147,3 +137,7 @@
 
 
 @endsection
+@push('js')
+<script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+@endpush

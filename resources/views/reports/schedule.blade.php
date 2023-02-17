@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@push('css')
+<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -84,11 +86,11 @@
                                 @foreach ($schedules as $schedule)
                                 <tr>
                                     <td>{{ $schedule->id }}</td>
-                                    <td>{{ $schedule->name }}</td>
+                                    <td>{{ $schedule->title }}</td>
                                     <td>{{ $schedule->mentor->user->name }}</td>
                                     <td>{{ $schedule->request->school->school_name }}</td>
-                                    <td>{{ $schedule->start_date_time }}</td>
-                                    <td>{{ $schedule->end_date_time }}</td>
+                                    <td>{{ $schedule->start}}</td>
+                                    <td>{{ $schedule->end }}</td>
                                     <td>{{ $schedule->created_at }}</td>                            
                                 </tr>
                                 @endforeach

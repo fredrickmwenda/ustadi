@@ -38,7 +38,9 @@
                             </div> -->
                             <!-- <div class="col-sm-8"> -->
                                 <div class="text-sm-end">
+                                   @can('role.create')
                                     <a href="{{ route('roles.create') }}" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Roles</a>
+                                    @endcan
                                     <!-- <button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Roles</button> -->
                                 </div>
                             <!-- </div> -->
@@ -51,7 +53,9 @@
                             <div>
                             <h4 class="card-title">{{ $page->name }}</h4>
                             <!--edit button-->
+                            @can('role.edit')
                             <a href="{{ route('roles.edit', $page->id) }}" class="btn btn-primary btn-sm mb-4"><i class="mdi mdi-pencil"></i></a>
+                            @endcan
                             </div>
                             @foreach ($page->permissions as $perm)
 								<span class="badge badge-success mr-1 mb-2" style="color: black;border-radius: 0.5rem;background-color: #34c38f!important;">

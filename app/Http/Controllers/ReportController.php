@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DatesValidator;
 use App\Models\Availability;
+use App\Models\Mentor;
 use App\Models\Schedule;
 use App\Models\School;
 use App\Models\SchoolClubActivity;
@@ -37,11 +38,12 @@ class ReportController extends Controller
         if ($res != 'success') {
             return redirect()->back()->with('error', $res);
         }
-        $availability = Availability::select('*')->when($request->from_date && $request->to_date, function ($query) use ($request) {
+        $availabilities = Mentor::whereNotNull('availability')->select('*')->when($request->from_date && $request->to_date, function ($query) use ($request) {
             return $query->whereBetween('created_at', [$request->from_date, $request->to_date]);
         })->get();
-        $availability_count = $availability->count();
-        return view('reports.availability', compact('availability', 'availability_count'));
+        // dd($availabilities);
+        $availability_count = $availabilities->count();
+        return view('reports.availability', compact('availabilities', 'availability_count'));
     }
 
     public function schoolReport(Request $request)

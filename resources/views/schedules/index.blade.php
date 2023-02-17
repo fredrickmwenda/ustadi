@@ -1,6 +1,7 @@
 @extends('layouts.app')
-
-
+@push('css')
+<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -29,23 +30,25 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <div class="col-sm-4">
-                                <div class="search-box me-2 mb-2 d-inline-block">
+                            <h4 class="card-title">Total Schedules: {{$schedules->count()}}</h4>
+                                <!-- <div class="search-box me-2 mb-2 d-inline-block">
                                     <div class="position-relative">
                                         <input type="text" class="form-control" placeholder="Search...">
                                         <i class="bx bx-search-alt search-icon"></i>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-sm-8">
                                 <div class="text-sm-end">
-                                    <a href="{{ route('schedules.create') }}" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Schedule</a>
-                                    
+                                    @can('schedule.create')
+                                        <a href="{{ route('schedules.create') }}" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Schedule</a>
+                                    @endcan                                
                                 </div>
                             </div><!-- end col-->
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table align-middle table-nowrap table-check">
+                            <table class="table align-middle table-nowrap table-check" id="s-datatable">
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width: 20px;" class="align-middle">
@@ -77,10 +80,8 @@
                                         </td>
                                         <td>{{ $key + 1 }}</td>
                                         <td>
-                                            <{{ $schedule->name }}
-                                        <!-- <td>
-                                            {{ $schedule->description }}
-                                        </td> -->
+                                            {{ $schedule->title }}
+                                        </td>
                                         <td>
                                             <a href="javascript: void(0);" class="text-body fw-bold">{{ $schedule->mentor->user->name }}</a>
                                         </td>
@@ -98,7 +99,6 @@
                                             <!--use carbon to format date-->
                                             {{ $schedule->end }}
                                         </td>
-]
                                         <td>
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-primary btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target=".scheduledetailsModal" data-id="{{ $schedule->id }}">
@@ -107,8 +107,12 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-3">
+                                                @can('schedule.edit')
                                                 <a href="{{ route('schedules.edit', $schedule->id)}}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                @endcan
+                                                @can('schedule.delete')
                                                 <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>
@@ -116,23 +120,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <ul class="pagination pagination-rounded justify-content-end mb-2">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="javascript: void(0);" aria-label="Previous">
-                                    <i class="mdi mdi-chevron-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript: void(0);" aria-label="Next">
-                                    <i class="mdi mdi-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
+
                     </div>
                 </div>
             </div>
@@ -143,6 +131,12 @@
 
 
 @endsection
+
+
+@push('js')
+<script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+@endpush
 
 
 

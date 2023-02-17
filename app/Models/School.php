@@ -37,4 +37,9 @@ class School extends Model implements Transformable
         return $this->belongsTo(Location::class, 'county_id', 'id');
     }
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
 }

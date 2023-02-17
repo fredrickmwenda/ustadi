@@ -316,7 +316,7 @@
                                             <label class="col-lg-4 col-form-label required fw-bold fs-6">Availability *Set Days Available, Separated By Comma </label>
                                             <div class="col-lg-8">
                                                 <textarea class="form-control" id="availability" name="availability" rows="5">
-                                                    {{ $mentor->availability }}}
+                                                    {{ $mentor->availability }}
                                                 </textarea>
                                                 
                                             </div>

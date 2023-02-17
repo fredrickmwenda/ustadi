@@ -363,7 +363,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-xl-6">
-                    @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || Auth::user()->role_id == 3)
+                    @if (Auth::user()->role_id == 2)
                     <!--for admin and cordinator, show calendars for all mentors-->
                     <!--for mentor, show calendar for themselves-->
                     <div class="card card-custom card-stretch gutter-b">
@@ -398,6 +398,116 @@
                         </div>
                     </div>
                     @endif
+                    @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
+                    <div class="card">
+                        <div class="card-body" style="position: relative;">
+                            <h4 class="card-title mb-4">Schedules</h4>
+                            <ul class="verti-timeline list-unstyled">
+                                @foreach($current_month_schedules as $schedule)
+                                    @if(Carbon\Carbon::parse($schedule->start)->isToday())
+                                    <li class="event-list active">
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle font-size-18"></i>
+                                        </div>
+                                        <div class="media">
+                                            <div class="me-3">
+                                                <h5 class="font-size-14">{{ Carbon\Carbon::parse($schedule->start)->format('M j, g:i A') }}<i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
+                                            </div>
+                                            <div class="media-body">
+                                                <div>
+                                                    <span style="font-style: inherit;font-weight: bold;">{{$schedule->mentor->user->name}}</span>-
+                                                    {{$schedule->title}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @else
+                                    <li class="event-list">
+                                        <div class="event-timeline-dot">
+                                            <i class="bx bx-right-arrow-circle font-size-18"></i>
+                                        </div>
+                                        <div class="media">
+                                            <div class="me-3">
+                                                <h5 class="font-size-14">{{ Carbon\Carbon::parse($schedule->start)->format('M j, g:i A') }}<i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
+                                            </div>
+                                            <div class="media-body">
+                                                <div>
+                                                    <span style="font-style: inherit;font-weight: bold;">{{$schedule->mentor->user->name}}</span>-
+                                                    {{$schedule->title}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @endif
+
+                                @endforeach
+                                <!-- <li class="event-list">
+                                    <div class="event-timeline-dot">
+                                        <i class="bx bx-right-arrow-circle font-size-18"></i>
+                                    </div>
+                                    <div class="media">
+                                        <div class="me-3">
+                                            <h5 class="font-size-14">17 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                Everyone realizes why a new common language would be desirable... <a href="#">Read more</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="event-list active">
+                                    <div class="event-timeline-dot">
+                                        <i class="bx bxs-right-arrow-circle font-size-18 bx-fade-right"></i>
+                                    </div>
+                                    <div class="media">
+                                        <div class="me-3">
+                                            <h5 class="font-size-14">15 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                Joined the group “Boardsmanship Forum”
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="event-list">
+                                    <div class="event-timeline-dot">
+                                        <i class="bx bx-right-arrow-circle font-size-18"></i>
+                                    </div>
+                                    <div class="media">
+                                        <div class="me-3">
+                                            <h5 class="font-size-14">12 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                Responded to need “In-Kind Opportunity”
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="event-list">
+                                    <div class="event-timeline-dot">
+                                        <i class="bx bx-right-arrow-circle font-size-18"></i>
+                                    </div>
+                                    <div class="media">
+                                        <div class="me-3">
+                                            <h5 class="font-size-14">12 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ms-2"></i></h5>
+                                        </div>
+                                        <div class="media-body">
+                                            <div>
+                                                Responded to need “In-Kind Opportunity”
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li> -->
+                            </ul>
+                            <div class="text-center mt-4"><a href="{{route('schedules.index')}}" class="btn btn-primary waves-effect waves-light btn-sm">View More <i class="mdi mdi-arrow-right ms-1"></i></a></div>
+                        </div>
+                    </div>
+
+                    @endif
+
                     
                     
                 </div>
@@ -569,7 +679,6 @@
 @push('js')
 <script src="{{ asset('assets/libs/moment/min/moment.min.js') }}"></script>
 <script src="{{ asset('assets/libs/fullcalendar/fullcalendar.min.js') }}"></script>
-</script><script src="{{ asset('assets/js/app.js') }}"></script>
 <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 <script src="{{ asset('assets/js/pages/dashboard.init.js') }}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/basic/jquery.qtip.min.js"></script>

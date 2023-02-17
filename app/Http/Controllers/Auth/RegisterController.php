@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -66,33 +67,54 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // dd($data);
         //check if users _role is matron, if they are then create them in the matrons table and set their role to matron
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role' => 'admin',
-        ]);
+        // User::create([
+        //     'name' => $data['name'],
+        //     'email' => $data['email'],
+        //     'password' => Hash::make($data['password']),
+        //     'role' => $data['role']
+        // ]);
+        $user = new User();
+        $user->name = $data['name'];
+        // dd($user->name);
+        $user->email = $data['email'];
+        
+        $user->role = $data['role'];
+        if($data['role'] == 'mentor'){
+            $user->role_id = 2;
+        }
+        elseif($data['role'] == 'matron'){
+            $user->role_id = 4;
+        }
+       
+        $user->password = Hash::make($data['password']);
+        $user->save();
+
         //get the user id of the user that was just created
         $user = User::where('email', $data['email'])->first();
+        $role = Role::find($user->role_id);
+        $user->assignRole($role->name);
         if($data['role'] == 'matron'){
              
-            $matron = Matron::create([
+            Matron::create([
                 'user_id' => $user->id,
                 'school_id' => $data['school_id'],
             ]);
 
-            return $matron;
+            // return $matron;
         }
         if($data['role'] == 'mentor'){
-            $mentor = Mentor::create([
+            Mentor::create([
                 'user_id' => $user->id,
-                'location_id' => $data['location_id'],
+                'location_id' => $data['location'],
                 'status' => 'pending',
                 'approval_status' => 'pending',
             ]);
-            return $mentor;
+           
         }
+
+        return $user;
 
 
 

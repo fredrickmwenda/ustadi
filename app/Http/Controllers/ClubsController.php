@@ -52,16 +52,20 @@ class ClubsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $clubs = $this->repository->all();
+        $clubs = $this->repository->paginate(10);
 
         if (request()->wantsJson()) {
 
             return response()->json([
                 'data' => $clubs,
             ]);
+        }
+// if request is ajax, return the view
+        if ($request->ajax()) {
+            return response()->json(view('clubs.table', compact('clubs'))->render());
         }
 
         return view('clubs.index', compact('clubs'));
@@ -311,10 +315,11 @@ class ClubsController extends Controller
         $school_club->club_id = $club->id;
         $school_club->school_id = $school_id;
         $school_club->approved_by = $matron_id;
+        $school_club->students_count = $request->students_count;
         $school_club->approved = 1;
 
         $school_club->save();
-        return view ('schoolClubs.index')->with('success', 'Club Activated Successfully');
+        return view ('clubs.index')->with('success', 'Club Activated Successfully');
     }
 
     //on deactivation of a club by the matron delete it from school_c
@@ -353,5 +358,16 @@ class ClubsController extends Controller
         $school_club_activity->activity = $request->input('activity');
         $school_club_activity->save();
         return redirect()->back()->with('message', 'Club activity created.');
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('searchTerm');
+        $requests = Club::where('club_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('description', 'like', '%' . $searchTerm . '%')
+            ->get();
+        \Log::info($requests);
+
+        return response()->json($requests);
     }
 }

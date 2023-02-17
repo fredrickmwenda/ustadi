@@ -43,45 +43,53 @@
 					<div class="card-body">
 
 						<h4 class="card-title">Edit ClubActivity Information</h4>
-						<!-- <p class="card-title-desc">Fill all information below</p> -->
-						<!-- novalidate -->
-						<form class="needs-validation" method="POST" action="{{route('clubs-activities.update', $clubActivity->id)}}" novalidate>
+						
+						<form class="needs-validation" method="POST" action="{{route('school-club-activities.update', $schoolClubActivity->id)}}" novalidate>
 							@csrf
 
 							<div class="form-group row mb-4">
-								<label for="activities_name">ClubActivity Name</label>
-								<input id="clubActivityname" name="activities_name" type="text" class="col-form-label "  required value="{{$clubActivity->activities_name}}" readonly>
+							    <label for="activities_name">School ClubActivity Name</label>
+								<input id="school_club_activity" name="school_club_activity" type="text" class="col-form-label " value="{{$schoolClubActivity->school_club_activity}}" required>
 							</div>
 
 							<div class="form-group row mb-4">
 								<label for="clubActivity_description" >Description</label>
-								<textarea id="clubActivity_description" name="description" type="text" required>{{$clubActivity->description}}</textarea>
+								<textarea id="clubActivity_description" name="description" type="text" required>{{$schoolClubActivity->description}}</textarea>
 							</div>
 							<div class="form-group row mb-4">
-								<label for="clubs" class="col-form-label col-lg-2">Club</label>
-								<select class="form-control col-lg-10 select2" name="club_id" id="clubs" required>
-									<option>Select</option>
-									@foreach($clubs as $club)
+							    <label for="clubs" class="col-form-label col-lg-2">School Club</label>
+								<select class="form-control col-lg-10 select2" name="school_club_id" id="clubs" required>
+									
+								    @foreach($school_clubs as $school_club)
 									<!--get the club id from the clubActivity table and compare it with the club id from the club table-->
-										<option value="{{$club->id}}" {{$clubActivity->club_id == $club->id ? 'selected' : ''}}>{{$club->club_name}}</option>
+										<option value="{{$school_club->id}}" {{$schoolClubActivity->school_club_id == $school_club->id ? 'selected' : ''}}>{{$school_club->club->club_name}}</option>
 									@endforeach
 								</select>
 							</div>
 
 							<div class="form-group row mb-4">
-								<label for="activities_type" class="col-form-label col-lg-2">ClubActivity Type</label>
-								<select class="form-control col-lg-10 select2" name="activity_type_id" id="activities_type" required>
-									<option>Select</option>
-									@foreach($activity_types as $activities_type)
+							    <label for="activities_type" class="col-form-label col-lg-2">Club Activity </label>
+								<select class="form-control col-lg-10 select2" name="club_activity_id" id="activities_type" required>
+									
+									@foreach($club_activities as $activities_type)
 									<!--get the activity type id from the clubActivity table and compare it with the activity type id from the activity type table-->
-										<option value="{{$activities_type->id}}" {{$clubActivity->activity_type_id == $activities_type->id ? 'selected' : ''}}>{{$activities_type->name}}</option>
+										<option value="{{$activities_type->id}}" {{$schoolClubActivity->club_activity_id == $activities_type->id ? 'selected' : ''}}>{{$activities_type->activities_name}}</option>
 									@endforeach
 								</select>
 							</div>
+							
+
+							<div class="form-group row mb-4">
+								<label for="proposed_date" class="col-form-label col-lg-2">Proposed Date</label>
+								<!-- type  is date and time -->
+								<input id="proposed_date" name="proposed_date_time" type="datetime-local" class="col-form-label col-lg-10" value="{{$schoolClubActivity->proposed_date_time}}" required>
+							</div>
+
+
 
 							<div class="d-flex flex-wrap gap-2">
 								<button type="submit" class="btn btn-primary waves-effect waves-light">Save Changes</button>
-								<button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button>
+								<!-- <button type="button" class="btn btn-secondary waves-effect waves-light">Cancel</button> -->
 							</div>
 						</form>
 

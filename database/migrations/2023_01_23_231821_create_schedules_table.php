@@ -15,16 +15,16 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
 			$table->bigIncrements('id');
-            $table->string('name');
+            $table->string('title');
             $table->string('description')->nullable();
 			$table->unsignedBigInteger('mentor_id');
 			$table->foreign('mentor_id')->references('id')->on('mentors');
 			$table->unsignedBigInteger('request_id');
 			$table->foreign('request_id')->references('id')->on('requests');
             //start date and time store them together
-			$table->dateTime('start_date_time');
+			$table->dateTime('start');
             //end date and time store them together
-			$table->dateTime('end_date_time');
+			$table->dateTime('end');
             //logo if any
             $table->string('logo')->nullable();
             $table->timestamps();

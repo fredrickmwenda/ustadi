@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@push('css')
+<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endpush
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -71,22 +73,38 @@
                           <table class="table align-middle table-nowrap table-check" id="availability-datatable">
                               <thead class="table-light">
                                   <tr>
-                                      <th style="width: 20px;" class="align-middle">
-                                          <div class="form-check font-size-16">
-                                              <input class="form-check-input" type="checkbox" id="checkAll">
-                                              <label class="form-check-label" for="checkAll"></label>
-                                          </div>
-                                      </th>
                                       <th class="align-middle">ID</th>
                                       <th class="align-middle">Mentor Name</th>
                                       <th class="align-middle">Availability</th>
                                       <th class="align-middle">Specialization</th>
                                       <th class="align-middle">Location</th>
-                                      <th class="align-middle">Updated At</th>
+                                      <th class="align-middle">Created At</th>
                                   </tr>
                               </thead>
                               <tbody>
+                                @foreach($availabilities as $key => $availability)
+                                <tr>
+                                    <td>
+                                        {{$key+1}}
+                                    </td>
+                                    <td>
+                                        {{$availability->user->name}}
+                                    </td>
+                                    <td>
+                                        {{$availability->availability}}
+                                    </td>
+                                    <td>
+                                        {{$availability->specializations}}
+                                    </td>
+                                    <td>
+                                        {{$availability->location->name }}
+                                    </td>
+                                    <td>
+                                        {{$availability->created_at}}
+                                    </td>
+                                </tr>
 
+                                @endforeach
                               </tbody>
                           </table>
                         </div>

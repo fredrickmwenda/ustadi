@@ -14,6 +14,7 @@
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/libs/toastr/build/toastr.min.css') }}">
 
 
 
@@ -25,18 +26,31 @@
         <!-- <main class="py-4"> -->
             @yield('content')
         <!-- </main> -->
+        @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                toastr.error('{{ session('error') }}', 'Error!', {
+                    closeButton: true,
+                    // progressBar: true,
+                });
+            });
+        </script>
+    @endif
 </div>
 
-	@yield('js-script')
 
-    @stack('js')
 
     <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/toastr/build/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
+    
 
 
     <script src="{{ asset('assets/js/app.js') }}"></script>
+@yield('js-script')
+
+@stack('js')
 
    
 

@@ -114,7 +114,9 @@ class SchoolClubActivityController extends Controller
         $matron = Matron::where('user_id', auth()->user()->id)->first();
         $school_clubs = SchoolClub::where('school_id', $matron->school_id)->get();
         //route to the edit view
-        return view('school_club_activities.edit', compact('schoolClubActivity', 'school_clubs'));
+        $club_ids = $school_clubs->pluck('club_id');
+        $club_activities =ClubActivity::whereIn('club_id', $club_ids)->get();
+        return view('school_club_activities.edit', compact('schoolClubActivity', 'school_clubs', 'club_activities'));
     }
 
     /**

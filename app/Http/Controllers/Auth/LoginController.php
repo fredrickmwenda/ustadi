@@ -54,7 +54,9 @@ class LoginController extends Controller
      public function logout(Request $request) {
         Auth::logout();
         Session::flush();
-        return redirect()->route('login');
+        //redirect to view landing page and not route
+        return redirect('/');
+       // return redirect()->route('login');
     }
     public function __construct()
     {

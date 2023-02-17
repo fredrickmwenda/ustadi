@@ -79,7 +79,7 @@ class CordinatorsController extends Controller
      */
     public function store(CordinatorCreateRequest $request)
     {
-        dd($request->all());
+ 
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
@@ -96,7 +96,7 @@ class CordinatorsController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->route('cordinators.index')->with('message', $response['message']);
+            return redirect()->route('coordinators.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -172,7 +172,7 @@ class CordinatorsController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->route('cordinators.index')->with('message', $response['message']);
+            return redirect()->route('coordinators.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {
