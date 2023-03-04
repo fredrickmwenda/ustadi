@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cordinator;
 use App\Models\Location;
+use App\Models\Matron;
+use App\Models\Mentor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,10 +83,30 @@ class UserController extends Controller
         $role = Role::find($request->role_id);
         $user->assignRole($role->name);
 
+        $created_user = User::where('email', $request->email)->first();
+
+        if($role == 'matron'){          
+            Matron::create([
+                'user_id' => $created_user->id,
+                'school_id' => $request->school_id,
+            ]);
+        }
+        if($role == 'mentor'){
+            Mentor::create([
+                'user_id' => $created_user->id,
+                'location_id' => $request->location,
+                'status' => 'pending',
+                'approval_status' => 'pending',
+            ]);
+           
+        }
+
+        if($role == 'coordinator'){
+            Cordinator::create([
+                'user_id' => $created_user->id,
+            ]);       
+        }
         return redirect()->route('users.index')->with('success', 'User created successfully');
-
-
-
     }
 
     /**

@@ -32,13 +32,13 @@
                                 
                                 <div class="p-2">
                                     <div class="alert alert-success text-center mb-4" role="alert">
-                                        Enter your Email and instructions will be sent to you!
+                                        Enter your Email and instructions will be sent to you!!
                                     </div>
-                                    <form class="form-horizontal" action="http://www.themesbrand.com/skote/layouts/index.html">
-            
+                                    <form class="form-horizontal" action="{{ route('password.email') }}">
+                                        @csrf
                                         <div class="mb-3">
                                             <label for="useremail" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email">
+                                            <input type="email" class="form-control" name="email" id="useremail" placeholder="Enter email">
                                         </div>
                     
                                         <div class="text-end">
