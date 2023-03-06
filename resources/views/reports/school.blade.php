@@ -151,44 +151,44 @@
 <script src="{{ asset('assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
 <script src="{{ asset('assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
 <script>
-      $(document).ready(function() {
-            $("#school-datatable").DataTable({
-                language: {
-                    paginate: {
-                        previous: "<i class='mdi mdi-chevron-left'>",
-                        next: "<i class='mdi mdi-chevron-right'>"
-                    }
+    $(document).ready(function() {
+        $("#school-datatable").DataTable({
+            language: {
+                paginate: {
+                    previous: "<i class='mdi mdi-chevron-left'>",
+                    next: "<i class='mdi mdi-chevron-right'>"
+                }
+            },
+            drawCallback: function() {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 
+                {
+                    extend: "csv",
+                    title: "School Report",
                 },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+                {
+                    extend: "excel",
+                    title: "School Report",
                 },
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 
-                    {
-                        extend: "csv",
-                        title: "School Report",
-                    },
-                    {
-                        extend: "excel",
-                        title: "School Report",
-                    },
-                    {                
-                        extend: "pdf",
-                        title: "School Report",
-                    },
-                    {
-                        extend: "print",
-                        title: "School Report",
-                    },
-                    'colvis'
-                ],
-                //GET 20 ITEMS PER PAGE
-                "pageLength": 20,
-                //ORDER BY ID DESC
-                responsive: true,
-            });
+                {                
+                    extend: "pdf",
+                    title: "School Report",
+                },
+                {
+                    extend: "print",
+                    title: "School Report",
+                },
+                'colvis'
+            ],
+            //GET 20 ITEMS PER PAGE
+            "pageLength": 20,
+            //ORDER BY ID DESC
+            responsive: true,
         });
+    });
 </script>
 @endpush
 

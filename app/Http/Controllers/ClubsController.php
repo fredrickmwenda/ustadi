@@ -55,7 +55,8 @@ class ClubsController extends Controller
     public function index(Request $request)
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $clubs = $this->repository->paginate(10);
+        // $clubs = $this->repository->paginate(10);
+        $clubs = $this->repository->all();
 
         if (request()->wantsJson()) {
 
@@ -319,7 +320,8 @@ class ClubsController extends Controller
         $school_club->approved = 1;
 
         $school_club->save();
-        return view ('clubs.index')->with('success', 'Club Activated Successfully');
+        return redirect()->route('clubs.index')->with('message', 'Club Activated Successfully');
+        // return view ('clubs.index')->with('success', 'Club Activated Successfully');
     }
 
     //on deactivation of a club by the matron delete it from school_c
@@ -329,9 +331,10 @@ class ClubsController extends Controller
 
         //get the user id of the logged in user
         $user_id = auth()->user()->id;
+        // dd($user_id);
         //get the matron_id of the logged in user and use it to get the school_id
-        $matron_id = Matron::where('user_id', $user_id)->first()->id;
-        $school_id = School::where('matron_id', $matron_id)->first()->id;
+        $matron = Matron::where('user_id', $user_id)->first();
+        $school_id = $matron->school_id;
 
         //delete the school_club with the club id and school id
         $school_club = SchoolClub::where('club_id', $club->id)->where('school_id', $school_id)->first();

@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/search-requests', [App\Http\Controllers\ClubsController::class, 'search'])->name('clubs.search');
     //activate & deactivate club
     Route::post('clubs/{id}/activate', [App\Http\Controllers\ClubsController::class, 'activateClub'])->name('clubs.activate');
-    Route::post('clubs/{id}/deactivate', [App\Http\Controllers\ClubsController::class, 'deactivateClub'])->name('clubs.deactivate');
+    Route::any('clubs/{id}/deactivate', [App\Http\Controllers\ClubsController::class, 'deactivateClub'])->name('clubs.deactivate');
     // assign club to user
     Route::get('clubs/{id}/assign', [App\Http\Controllers\ClubsController::class, 'assignClub'])->name('clubs.assign');
     //clubs activities routes

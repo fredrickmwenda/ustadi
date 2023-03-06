@@ -61,7 +61,7 @@
                                       <th class="align-middle">Phone Number</th>
                                       <th class="align-middle">Email</th>
                                       <th class="align-middle">School </th>
-                                      <th class="align-middle">View Details</th>
+                                      <!-- <th class="align-middle">View Details</th> -->
                                       <th class="align-middle">Action</th>
                                   </tr>
                               </thead>
@@ -86,12 +86,11 @@
                                       <td>
                                             {{ $matron->school->school_name }}
                                       </td>
-                                      <td>
-                                          <!-- Button trigger modal -->
+                                      <!-- <td>
                                           <button type="button" class="btn btn-primary btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target=".orderdetailsModal">
                                               View Details
                                           </button>
-                                      </td>
+                                      </td> -->
                                       <td>
                                           <div class="d-flex gap-3">
                                               @can('matron.edit')
