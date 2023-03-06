@@ -60,7 +60,7 @@
                                       <th class="align-middle">Email</th>
                                       <th  class="align-middle">Location </th>
                                       <th class="align-middle">Creator</th>
-                                      <th class="align-middle">View Details</th>
+                                      <!-- <th class="align-middle">View Details</th> -->
                                       <th class="align-middle">Action</th>
                                   </tr>
                               </thead>
@@ -94,13 +94,13 @@
                                       <td>
                                          {{$school->creator->name}}      
                                       </td>
-                                      <td>
+                                      <!-- <td>
                           
-                                          <!-- Button trigger modal -->
+
                                           <button type="button" class="btn btn-primary btn-sm btn-rounded" data-bs-toggle="modal" data-bs-target=".orderdetailsModal">
                                               View Details
                                           </button>
-                                      </td>
+                                      </td> -->
                                       <td>
                                           <div class="d-flex gap-3">
                                               <a href="{{route('schools.edit', $school->id)}}" class="text-success"><i class="mdi mdi-pencil font-size-18"></i></a>

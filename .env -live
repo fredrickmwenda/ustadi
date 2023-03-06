@@ -32,11 +32,11 @@ REDIS_PORT=6379
 
 MAIL_DRIVER=smtp
 MAIL_HOST=smtp.gmail.com
-MAIL_PORT=465
-MAIL_USERNAME=mwendafredrick31@gmail.com
-MAIL_PASSWORD=tkkvfylujfqibyep
-MAIL_FROM_ADDRESS=mwendafredrick31@gmail.com
-MAIL_FROM_NAME=Mweguni
+MAIL_PORT= 465
+MAIL_USERNAME=support@mastadi.org
+MAIL_PASSWORD=bD#a-VuliT!x
+MAIL_FROM_ADDRESS=mail.mastadi.org
+MAIL_FROM_NAME=Mastadi
 MAIL_ENCRYPTION=ssl
 
 AWS_ACCESS_KEY_ID=

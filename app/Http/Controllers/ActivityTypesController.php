@@ -78,14 +78,14 @@ class ActivityTypesController extends Controller
     public function store(ActivityTypeCreateRequest $request)
     {
         try {
-            if(!auth()->user()->hasRole('mentor')){
-                return redirect()->back()->with('error', 'You are not authorized to perform this action');
-            }
+            // if(!auth()->user()->hasRole('mentor')){
+            //     return redirect()->back()->with('error', 'You are not authorized to perform this action');
+            // }
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $user_id = auth()->user()->id;
-            $mentor_id = \App\Models\Mentor::where('user_id', $user_id)->first()->id;
-            $request->merge(['mentor_id' => $mentor_id]);
+            // $user_id = auth()->user()->id;
+            // $mentor_id = \App\Models\Mentor::where('user_id', $user_id)->first()->id;
+            // $request->merge(['mentor_id' => $mentor_id]);
 
             $activityType = $this->repository->create($request->all());
 
@@ -175,7 +175,7 @@ class ActivityTypesController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return redirect()->route('activities-types.index')->with('message', $response['message']);
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {

@@ -218,4 +218,10 @@ class ResourcesController extends Controller
 
         return redirect()->back()->with('message', 'Resource deleted.');
     }
+
+    // $(document).ready(function() {
+    //     $('#cancelBtn').click(function() {
+    //       $('#myForm')[0].reset();
+    //     });
+    //   });
 }

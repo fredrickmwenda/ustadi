@@ -112,7 +112,9 @@
                                                 @endif
                                             @endcan
                                             @can('resource.delete')
-                                              <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
+                                               @if(Auth::user()->id == $resource->mentor->user->id)
+                                              <a href="{{ route('resources.destroy', $resource->id) }}" class="text-danger"><i class="mdi mdi-delete font-size-18"></i></a>
+                                              @endif
                                             @endcan
                                           </div>
                                       </td>

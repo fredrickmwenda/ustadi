@@ -41,7 +41,7 @@
 						<h4 class="card-title">Edit Matron </h4>
 						<!-- <p class="card-title-desc">Fill all information below</p> -->
 						<!-- novalidate -->
-						<form class="needs-validation" method="POST" action="{{route('matrons.store')}}" novalidate>
+						<form class="needs-validation" method="POST" action="{{route('matrons.update', $matron->id)}}" novalidate>
 							@csrf
 
 							<div class="form-group row mb-4">

@@ -37,7 +37,7 @@
 						<h4 class="card-title">ActivityType Information</h4>
 						<!-- <p class="card-title-desc">Fill all information below</p> -->
 						<!-- novalidate -->
-						<form class="needs-validation" method="POST" action="{{route('activities-types.store')}}" novalidate>
+						<form class="needs-validation" method="POST" action="{{route('activities-types.update', $activityType->id)}}" novalidate>
 							@csrf
 
 							<div class="form-group row mb-4">
