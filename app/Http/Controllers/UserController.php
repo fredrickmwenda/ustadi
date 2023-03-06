@@ -180,20 +180,21 @@ class UserController extends Controller
 
     public function update_profile(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|string|email|max:255|unique:users,email,'.Auth::user()->id,
             'phone' => 'sometimes|unique:users,phone,'.Auth::user()->id,
-            'password' => 'sometimes|string|min:6|confirmed',
+            
         ]);
         // dd($request->all());
         $user = User::find(Auth::user()->id);
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        if($request->password) {
-            $user->password = Hash::make($request->password);
-        }
+        // if($request->password) {
+        //     $user->password = Hash::make($request->password);
+        // }
 
         if ($request->hasFile('profile_picture')) {
             $image = $request->file('profile_picture');
@@ -215,7 +216,7 @@ class UserController extends Controller
             $user->profile_picture= $name;
         }
         $user->save();
-        return redirect()->route('users.profile')->with('success', 'Profile updated successfully!');
+        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
     }
 
     public function changePassword(Request $request)

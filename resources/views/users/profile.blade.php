@@ -35,8 +35,8 @@
                         <div class="me-7 mb-4">
                             <!--Profile picture-->
                             <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                                @if($user->profile_photo)
-                                <img src="{{ asset('storage/'.$user->profile_photo) }}" alt="image" />
+                                @if($user->profile_picture)
+                                <img src="{{ asset('assets/images/profile/'.$user->profile_picture) }}" alt="image" />
                                 @else
                                 <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="image" />
                                 @endif
@@ -240,14 +240,16 @@
                                         <h3 class="fw-bold m-0">Edit Profile</h3>
                                     </div>
                                 </div>
-                                <form id="changePassword">
+                                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="card-body">
                                         <div class="row mb-3">
                                             <label class="col-lg-4 col-form-label required fw-bold fs-6">Profile Picture</label>
                                             <div class="col-lg-8">
+                                                <input class="form-control form-control-lg form-control-solid" type="file" name="profile_picture"  value="assets/images/profile/{{ $user->profile_picture }}" />
+                                                   
                                                <!-- style="background-image: url('https:preview.keenthemes.com/keen/themes/metronic8/demo6/assets/media/svg/avatars/300-1.jpg')" -->
-                                                <div class="image-input image-input-outline" >
+                                                <!-- <div class="image-input image-input-outline" >
                                                 @if($user->avatar)
                                                     <div class="image-input-wrapper w-125px h-125px" style="background-image: url('{{ asset('storage/'.$user->avatar) }}')"></div>
                                                 @else
@@ -259,15 +261,11 @@
                                                         <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
                                                         <input type="hidden" name="avatar_remove">
                                                     </label>
-                                                    <!-- <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
-                                                        <i class="bx bx-x fs-2"></i>
-                                                    </span> -->
                                                     <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
-                                                        <!--remove icon-->
                                                         <i class="bx bx-x fs-2"></i>
                                                     </span>
-                                                </div>
-                                                <div class="form-text">Allowed file types:  png, jpg, jpeg.</div>
+                                                </div> -->
+                                                <!-- <div class="form-text">Allowed file types:  png, jpg, jpeg.</div> -->
                                             </div>
                                         </div>
                                         <div class="row mb-3">

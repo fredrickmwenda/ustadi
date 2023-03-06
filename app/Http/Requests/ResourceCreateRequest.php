@@ -24,7 +24,12 @@ class ResourceCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'type' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'release_date' => 'required|date',
+            'url' => 'required|url|max:255',
         ];
     }
 }

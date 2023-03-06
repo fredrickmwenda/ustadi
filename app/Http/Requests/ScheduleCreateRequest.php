@@ -24,7 +24,11 @@ class ScheduleCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'request_id' => 'required|integer',
+            'start' => 'required|date',
+            'end' => 'required|date',	
         ];
     }
 }
