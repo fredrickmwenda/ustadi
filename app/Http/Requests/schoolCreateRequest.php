@@ -24,7 +24,11 @@ class schoolCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'school_name' => 'required|string|max:255',
+            'county_id' => 'required|integer',
+            'phone'=> 'required|string',
+            'email'=> 'required|email|max:255',
+            'motto' => 'required|string|max:255',
         ];
     }
 }

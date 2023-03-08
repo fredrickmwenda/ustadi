@@ -107,7 +107,25 @@ class ClubsController extends Controller
                 //from the request remove the file and add the name of the file to the request
                 $logo = $name;
                 // $request->merge(['logo' => $name]);
-                
+                $club = $this->repository->create(
+                    //pass the parameters to the create method
+                    [
+                        'club_name' => $request->club_name,
+                        'description' => $request->description,
+                        'logo' => $logo,
+                        'created_by' => $created_by,
+                    ]
+                );
+            }
+            else{
+                $club = $this->repository->create(
+                    //pass the parameters to the create method
+                    [
+                        'club_name' => $request->club_name,
+                        'description' => $request->description,
+                        'created_by' => $created_by,
+                    ]
+                );
             }
            
             //remove the logo from the request before saving
@@ -115,15 +133,7 @@ class ClubsController extends Controller
             // dd($logo, $request->all());
 
 
-            $club = $this->repository->create(
-                //pass the parameters to the create method
-                [
-                    'club_name' => $request->club_name,
-                    'description' => $request->description,
-                    'logo' => $logo,
-                    'created_by' => $created_by,
-                ]
-            );
+
 
             $response = [
                 'message' => 'Club created.',

@@ -24,7 +24,10 @@ class ClubActivityCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'activities_name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'club_id' => 'required|integer',
+            'activity_type_id' => 'required|integer'
         ];
     }
 }

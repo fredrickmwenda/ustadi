@@ -77,7 +77,7 @@
 							</div>
 
 							<div class="form-group row mb-4">
-								<label class="col-form-label col-lg-2">Add School Logo </label>
+								<label class="col-form-label col-lg-2">School Logo </label>
 								<input class="form-control" type="file" name="logo" />
 							</div>
 

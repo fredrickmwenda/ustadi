@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 use App\Http\Requests;
 use Prettus\Validator\Contracts\ValidatorInterface;
@@ -209,23 +210,56 @@ class SchoolsController extends Controller
     public function update(Request $request, $id)
     {
         // dd($request->all());
+        $school = School::find($id);
         $request->validate([
             'school_name' => 'required|max:100',
             'county_id' => 'required',
-            'email' => $request->email != null ? 'unique:schools|max:100' : '',
+            'email' => [
+                'nullable',
+                'email',
+                'max:100',
+                Rule::unique('schools')->ignore($school->id)->where(function ($query) use ($school, $request) {
+                    return $query->where('email', $request->email)->where('id', '<>', $school->id);
+                }),
+            ],
+            // 'email' => $request->email != null ? 'unique:schools|max:100' : '',
             'phone' => 'required',
             'motto' => 'required',
         ]);
 
-        $school = School::find($id);
-        //update school
-        $school->update([
-            'school_name' => $request->school_name,
-            'county_id' => $request->county_id,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'motto' => $request->motto,
-        ]);
+        
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo')->getClientOriginalName();
+            $filename = pathinfo($file, PATHINFO_FILENAME);
+            // get just extension
+            $extension = $request->file('logo')->getClientOriginalExtension();
+            // filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            //move the file to the folder, assets/images/clubs
+            $path = $request->file('logo')->move(public_path('assets/images/school'), $fileNameToStore);
+            $name = $fileNameToStore;
+            // dd($name);
+            //from the request remove the file and add the name of the file to the request
+            $logo = $name;
+            $school->update([
+                'school_name' => $request->school_name,
+                'county_id' => $request->county_id,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'motto' => $request->motto,
+                'logo'=> $logo,
+            ]);
+        }
+        else{
+            $school->update([
+                'school_name' => $request->school_name,
+                'county_id' => $request->county_id,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'motto' => $request->motto,
+            ]);
+        }
+
 
         return redirect()->route('schools.index')->with('success', 'School updated successfully');
     }

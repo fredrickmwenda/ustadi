@@ -207,8 +207,19 @@ class RequestsController extends Controller
     public function edit($id)
     {
         $request = $this->repository->find($id);
+        $user_id =  auth()->user()->id;
+        $matron = \App\Models\Matron::where('user_id', $user_id)->first();
+        $school_id = $matron->school_id;     
+        $schools = \App\Models\School::where('id', $school_id)->first();
+        $school_club_ids = \App\Models\SchoolClub::where('school_id', $school_id)->pluck('id');
 
-        return view('requests.edit', compact('request'));
+        //get the location_id of the school
+        $location_id = $schools->county_id;
+        $mentors = \App\Models\Mentor::where('location_id', $location_id)->get();
+        // also check that school_club_activity is not past proposed_date_time
+        $school_club_activities = \App\Models\SchoolClubActivity::where('school_club_id', $school_club_ids)->where('proposed_date_time', '>', date('Y-m-d H:i:s'))->get();
+
+        return view('requests.edit', compact('request', 'schools', 'school_club_activities'));
     }
 
     /**

@@ -41,7 +41,7 @@
 						<h4 class="card-title">Edit School</h4>
 						<!-- <p class="card-title-desc">Fill all information below</p> -->
 						<!-- novalidate -->
-						<form class="needs-validation" method="POST" action="{{route('schools.update', $school->id)}}" novalidate>
+						<form class="needs-validation" method="POST" action="{{route('schools.update', $school->id)}}" novalidate enctype="multipart/form-data">
 							@csrf
 
 							<div class="form-group row mb-4">
@@ -73,6 +73,10 @@
                                 <label for="school_motto">School Motto</label>
                                 <textarea class="form-control" name="motto" id="school_motto" rows="3">{{$school->motto}}</textarea>
                             </div>
+							<div class="form-group row mb-4">
+								<label class="col-form-label col-lg-2">School Logo </label>
+								<input class="form-control" type="file" name="logo" value="{{ asset('assets/images/school/').$school->logo  }}" />
+							</div>
                                 
 
 							<div class="d-flex flex-wrap gap-2">

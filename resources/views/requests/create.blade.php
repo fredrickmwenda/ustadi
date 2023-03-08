@@ -46,7 +46,12 @@
 
 							<div class="form-group row mb-4">
 								<label for="schoolname">Mentor Name</label>
-								<input type="text" class="form-control" id="mentor_name" name="mentor_name" placeholder="Enter Mentor Name" required>
+								<select class="form-control select2" name="mentor_id" id="mentor_id" required>
+								    <option>Select</option>
+									@foreach($mentors as $mentor)
+										<option value="{{$mentor->id}}">{{$mentor->user->name}}</option>
+									@endforeach
+								</select>
 							</div>
 							<!-- <!-hidden input with school id--> 
 							

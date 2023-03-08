@@ -24,7 +24,11 @@ class requestCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'mentor_id' => 'required|integer',
+            'school_id' => 'required|integer',
+            'proposed_date_time' => 'required|date',
+            'school_club_activity_id' => 'required|integer'
+            
         ];
     }
 }
