@@ -87,7 +87,6 @@
                                         @endif
 
                                         <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
-                                            <!--get rounded small email icon-->
                                             <span class="me-1">
                                                 <i class="bx bx-envelope fs-7"></i>
                                             </span>

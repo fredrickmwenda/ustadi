@@ -13,6 +13,7 @@ use App\Models\Club;
 use App\Models\Matron;
 use App\Models\School;
 use App\Models\SchoolClub;
+use App\Models\SchoolClubActivity;
 use App\Repositories\ClubRepository;
 use App\Validators\ClubValidator;
 use Illuminate\Support\Facades\Auth;
@@ -233,7 +234,7 @@ class ClubsController extends Controller
             }
             else{
 
-                $club = $this->repository->update([
+                $club = $this->repository->create([
                     'club_name' => $request->club_name,
                     'description' => $request->description,
                 ], 
@@ -355,6 +356,7 @@ class ClubsController extends Controller
     //matron creates school club activities
     public function storeSchoolClubActivity(Request $request)
     {
+        dd($request->all());
         //get the user id of the logged in user
         $user_id = auth()->user()->id;
         //get the matron_id of the logged in user and use it to get the school_id

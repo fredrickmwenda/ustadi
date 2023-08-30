@@ -55,7 +55,7 @@
 							</div>
 							<div class="inner-repeater mb-4">
 								<div data-repeater-list="inner-group" class="inner form-group mb-0 row">
-									<label class="col-form-label col-lg-2">Edit Club Logo </label>
+									<label class="col-form-label col-lg-2"> Club Logo </label>
 									<div  data-repeater-item class="inner col-lg-10 ms-md-auto">
 										<div class="mb-3 row align-items-center">
 											<div class="mt-4 mt-md-0">

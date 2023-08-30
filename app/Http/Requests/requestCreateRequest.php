@@ -27,8 +27,7 @@ class requestCreateRequest extends FormRequest
             'mentor_id' => 'required|integer',
             'school_id' => 'required|integer',
             'proposed_date_time' => 'required|date',
-            'school_club_activity_id' => 'required|integer'
-            
+            'school_club_activity_id' => 'required|integer'       
         ];
     }
 }

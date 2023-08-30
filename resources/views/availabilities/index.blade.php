@@ -44,7 +44,7 @@
                         <div class="table-responsive">                             
                             <table class="table align-middle table-nowrap table-check">
                                 <thead class="table-light">
-                                    <tr>
+                                    <tr>                             
                                         <th style="width: 20px;" class="align-middle">
                                             <div class="form-check font-size-16">
                                                 <input class="form-check-input" type="checkbox" id="checkAll">
